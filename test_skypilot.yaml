@@ -1,0 +1,23 @@
+resources:
+  # Optional; if left out, automatically pick the cheapest cloud.
+  # cloud: aws
+  # 8x NVIDIA A100 GPU
+  # accelerators: A100:1
+  # accelerators: V100
+  # accelerators: V100-32GB
+
+# Working directory (optional) containing the project codebase.
+# Its contents are synced to ~/sky_workdir/ on the cluster.
+workdir: .
+
+# Typical use: pip install -r requirements.txt
+# Invoked under the workdir (i.e., can use its files).
+setup: |
+  uv pip install ./dist_vis
+
+# Typical use: make use of resources, such as running training.
+# Invoked under the workdir (i.e., can use its files).
+run: |
+  echo "Hello, SkyPilot!"
+  python main.py
+  

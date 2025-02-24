@@ -1,0 +1,7 @@
+README.md
+setup.py
+dist_vis.egg-info/PKG-INFO
+dist_vis.egg-info/SOURCES.txt
+dist_vis.egg-info/dependency_links.txt
+dist_vis.egg-info/requires.txt
+dist_vis.egg-info/top_level.txt

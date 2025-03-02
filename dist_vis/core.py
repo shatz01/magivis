@@ -55,12 +55,6 @@ def disable():
         _orig_all_reduce = None
         print("Distributed visualization disabled")
 
-def sanity_check():
-    print("✅ Sanity check passed")
-
-def sanity_check_2():
-    print("✅ Sanity check 2 passed")
-
 def sanity_check_with_torch():
     print("✅ Sanity check with torch starting...")
     print("torch.__version__:", torch.__version__)
@@ -70,12 +64,17 @@ def sanity_check_with_torch():
         print("Num GPUs:", torch.cuda.device_count())
     else:
         print("No CUDA available")
-    if cuda_available:
-        print("Distributed initialized:", dist.is_initialized())
+    
+    # Check if distributed is initialized before trying to access distributed info
+    is_initialized = dist.is_initialized()
+    print("Distributed initialized:", is_initialized)
+    
+    if is_initialized:
         print("World size:", dist.get_world_size())
         print("Rank:", dist.get_rank())
     else:
         print("Distributed not initialized")
+
     print("✅ Sanity check with torch passed")
 
 

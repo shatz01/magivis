@@ -3,8 +3,11 @@ resources:
   # cloud: aws
   # 8x NVIDIA A100 GPU
   # accelerators: A100:1
-  # accelerators: V100
+  accelerators: RTX3090:2
   # accelerators: V100-32GB
+  # accelerators: {A10:1, L4:1, A10g:1}
+  # - cloud:
+
 
 # Working directory (optional) containing the project codebase.
 # Its contents are synced to ~/sky_workdir/ on the cluster.
@@ -19,5 +22,18 @@ setup: |
 # Invoked under the workdir (i.e., can use its files).
 run: |
   echo "Hello, SkyPilot!"
-  python main.py
   
+  # Check CUDA availability and GPU count
+  python -c "import torch; print('CUDA available:', torch.cuda.is_available()); print('GPU count:', torch.cuda.device_count())"
+  
+  # Set required environment variables explicitly
+  export MASTER_ADDR=localhost
+  export MASTER_PORT=12355
+  # export NCCL_DEBUG=INFO
+  
+  echo "About to run torchrun"
+  echo "Torchrun command from: $(which torchrun)"
+  
+  # Run with timeout to prevent indefinite hanging
+  #  python -m torch.distributed.launch --nproc_per_node=2 main.py
+  timeout 15 torchrun --nproc_per_node=2 --master_addr="localhost" --master_port=12355 main.py
